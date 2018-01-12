@@ -26,7 +26,7 @@ public class Day {
 	@Column
 	private String name;
 	@Column
-	private Integer userId;
+	private String userId;
 	@Column
 	private Date date;
 
@@ -57,11 +57,11 @@ public class Day {
 		this.name = name;
 	}
 
-	public Integer getUserId() {
+	public String getUserId() {
 		return userId;
 	}
 
-	public void setUserId(Integer userId) {
+	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
@@ -79,7 +79,7 @@ public class Day {
 	}
 
 	public Day(Integer id, @Size(min = 1, message = "Name should have at least 1 characters") String name,
-			Integer userId, Date date, ArrayList<Exercise> exercises) {
+			String userId, Date date, ArrayList<Exercise> exercises) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -88,7 +88,7 @@ public class Day {
 		this.exercises = exercises;
 	}
 
-	public Day(@Size(min = 1, message = "Name should have at least 1 characters") String name, Integer userId,
+	public Day(@Size(min = 1, message = "Name should have at least 1 characters") String name, String userId,
 			Date date, ArrayList<Exercise> exercises) {
 		super();
 		this.name = name;

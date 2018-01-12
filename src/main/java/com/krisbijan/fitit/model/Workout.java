@@ -25,7 +25,7 @@ public class Workout {
 	@Column
 	private String name;
 	@Column
-	private Integer userId;
+	private String userId;
 
 	@Column
 	private ArrayList<Exercise> exercises;
@@ -54,11 +54,11 @@ public class Workout {
 		this.name = name;
 	}
 
-	public Integer getUserId() {
+	public String getUserId() {
 		return userId;
 	}
 
-	public void setUserId(Integer userId) {
+	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
@@ -68,7 +68,7 @@ public class Workout {
 	}
 
 	public Workout(Integer id, @Size(min = 1, message = "Name should have at least 1 characters") String name,
-			Integer userId, ArrayList<Exercise> exercises) {
+			String userId, ArrayList<Exercise> exercises) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -76,7 +76,7 @@ public class Workout {
 		this.exercises = exercises;
 	}
 
-	public Workout(@Size(min = 1, message = "Name should have at least 1 characters") String name, Integer userId,
+	public Workout(@Size(min = 1, message = "Name should have at least 1 characters") String name, String userId,
 			ArrayList<Exercise> exercises) {
 		super();
 		this.name = name;

@@ -16,24 +16,17 @@ import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-@Table
-@Entity
 public class Appuser {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@JsonIgnore
 	private Integer id;
 
-	@Column(unique = true)
 	@Size(min = 6, message = "Name should have at least 6 characters")
 	private String name;
 
 	@Past
-	@Column
 	private Date DOB;
 
-	@Column
 	private String password;
 
 	@ManyToMany(fetch = FetchType.EAGER)

@@ -12,7 +12,7 @@ import com.krisbijan.fitit.Action;
 import com.krisbijan.fitit.model.Appuser;
 import com.krisbijan.fitit.service.user.UserService;
 
-@RestController
+//not exposed as REST api
 public class UserController {
 
 	private final Logger LOGGER = LoggerFactory.getLogger("appuser");

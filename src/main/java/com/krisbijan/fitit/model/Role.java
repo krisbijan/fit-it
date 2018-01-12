@@ -12,13 +12,10 @@ import org.springframework.security.core.GrantedAuthority;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-@Entity
-@Table
 public class Role implements GrantedAuthority{
 
 
 	
-	@Id
 	@JsonIgnore
 	private Integer id;
 	

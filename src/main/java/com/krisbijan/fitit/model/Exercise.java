@@ -24,7 +24,7 @@ public class Exercise {
 	private String name;
 
 	@Column
-	private Integer userId;
+	private String userId;
 	
 	@Column
 	private Integer categoryId;
@@ -67,11 +67,11 @@ public class Exercise {
 		this.name = name;
 	}
 
-	public Integer getUserId() {
+	public String getUserId() {
 		return userId;
 	}
 
-	public void setUserId(Integer userId) {
+	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
@@ -89,7 +89,7 @@ public class Exercise {
 	}
 
 	public Exercise(Integer id, @Size(min = 1, message = "Name should have at least 1 characters") String name,
-			Integer userId, Integer categoryId, Integer reps, Integer sets) {
+			String userId, Integer categoryId, Integer reps, Integer sets) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -99,7 +99,7 @@ public class Exercise {
 		this.sets = sets;
 	}
 
-	public Exercise(@Size(min = 1, message = "Name should have at least 1 characters") String name, Integer userId,
+	public Exercise(@Size(min = 1, message = "Name should have at least 1 characters") String name, String userId,
 			Integer categoryId, Integer reps, Integer sets) {
 		super();
 		this.name = name;

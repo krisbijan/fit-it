@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,7 +30,7 @@ public class ExerciseCategoryController {
 	private ExerciseCategoryService service;
 	
 	@PostMapping("/category")
-	public ResponseEntity<Object> createCategory(@Valid @RequestBody ExerciseCategory category) {
+	public ResponseEntity<Object> createCategory(@Valid @RequestBody ExerciseCategory category,Authentication authentication) {
 		Action action = new Action();
 		LOGGER.debug(action+" Request for creating category: " +category);
 		return service.createCategory(category,action);
@@ -37,14 +38,14 @@ public class ExerciseCategoryController {
 	
 
 	@GetMapping("/category/{username}")
-	public List<ExerciseCategory> getAllUserCategories(@PathVariable String username) {
+	public List<ExerciseCategory> getAllUserCategories(@PathVariable String username,Authentication authentication) {
 		Action action = new Action();
 		LOGGER.debug(action+" Request for getting all categories for userId: " +username);
 		return service.getAllCategories(username, action);
 	}
 	
 	@DeleteMapping("/category")
-	public ExerciseCategory deleteCategory(@RequestBody Map<String,Object> body) {
+	public ExerciseCategory deleteCategory(@RequestBody Map<String,Object> body,Authentication authentication) {
 		Action action = new Action();
 		String categoryName= (String) body.get("categoryName");
 		String username= (String) body.get("username");
