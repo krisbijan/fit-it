@@ -1,11 +1,6 @@
 package com.krisbijan.fitit.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -23,94 +18,21 @@ public class Exercise {
 	@Column
 	private String name;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id", nullable = false)
+	private Appuser appuser;
+
+	//0-reps exercise, 1-time exercise
 	@Column
-	private String userId;
-	
+	private Boolean reps_or_time;
+
 	@Column
-	private Integer categoryId;
+	private Boolean template;
 	
 	@Column
 	private Integer reps;
 	
 	@Column
 	private Integer sets;
-
-	public Integer getReps() {
-		return reps;
-	}
-
-	public void setReps(Integer reps) {
-		this.reps = reps;
-	}
-
-	public Integer getSets() {
-		return sets;
-	}
-
-	public void setSets(Integer sets) {
-		this.sets = sets;
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getUserId() {
-		return userId;
-	}
-
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-
-	public Integer getCategoryId() {
-		return categoryId;
-	}
-
-	public void setCategoryId(Integer categoryId) {
-		this.categoryId = categoryId;
-	}
-
-	@Override
-	public String toString() {
-		return "Exercise [id=" + id + ", name=" + name + ", userId=" + userId + ", categoryId=" + categoryId + "]";
-	}
-
-	public Exercise(Integer id, @Size(min = 1, message = "Name should have at least 1 characters") String name,
-			String userId, Integer categoryId, Integer reps, Integer sets) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.userId = userId;
-		this.categoryId = categoryId;
-		this.reps = reps;
-		this.sets = sets;
-	}
-
-	public Exercise(@Size(min = 1, message = "Name should have at least 1 characters") String name, String userId,
-			Integer categoryId, Integer reps, Integer sets) {
-		super();
-		this.name = name;
-		this.userId = userId;
-		this.categoryId = categoryId;
-		this.reps = reps;
-		this.sets = sets;
-	}
-
-	public Exercise() {
-		super();
-	}
 
 }

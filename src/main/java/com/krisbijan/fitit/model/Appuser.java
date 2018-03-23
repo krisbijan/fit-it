@@ -1,104 +1,57 @@
 package com.krisbijan.fitit.model;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
+
+import org.springframework.stereotype.Component;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+@Entity
+@Table(name = "appuser")
 public class Appuser {
 
 	@JsonIgnore
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@Size(min = 6, message = "Name should have at least 6 characters")
-	private String name;
+	@Size(min = 2, message = "First name should have at least 2 characters")
+	@NotNull
+	private String first_name;
+
+	@Size(min = 2, message = "Last name should have at least 2 characters")
+	@NotNull
+	private String last_name;
 
 	@Past
 	private Date DOB;
 
+	@NotNull
+	@JsonIgnore
 	private String password;
 
+	/*
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "user_role", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "role_id") })
 	private Set<Role> roles;
+	*/
 
-	public Integer getId() {
-		return id;
-	}
+	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "user_id")
+	private Set<Day> days = new HashSet<>();
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "user_id")
+	private Set<Workout> workouts = new HashSet<>();
 
-	public Appuser(Integer id, @Size(min = 6, message = "Name should have at least 6 characters") String name,
-			@Past Date dOB, String password, Set<Role> roles) {
-		super();
-		this.id = id;
-		this.name = name;
-		DOB = dOB;
-		this.password = password;
-		this.roles = roles;
-	}
+	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "user_id")
+	private Set<Exercise> exercises = new HashSet<>();
 
-	public Date getDOB() {
-		return DOB;
-	}
-
-	public void setDOB(Date dOB) {
-		DOB = dOB;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public Set<Role> getRoles() {
-		return roles;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void setRoles(Set<Role> roles) {
-		this.roles = roles;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", username=" + name + ", DOB=" + DOB + "]";
-	}
-
-	public Appuser() {
-
-	}
-
-	public Appuser(@Size(min = 6, message = "Name should have at least 6 characters") String username, @Past Date dOB,
-			String password) {
-		super();
-		this.name = username;
-		DOB = dOB;
-		this.password = password;
-	}
 
 }
