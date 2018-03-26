@@ -11,8 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.krisbijan.fitit.Action;
-import com.krisbijan.fitit.model.Appuser;
+import com.krisbijan.fitit.exception.UnauthorizedAccessException;
 import com.krisbijan.fitit.service.user.UserRepository;
+import com.krisbijan.fitit.model.Exercise;
 import com.krisbijan.fitit.model.ExerciseCategory;
 
 @Service
@@ -21,54 +22,38 @@ public class ExerciseCategoryService {
 	private final Logger LOGGER = LoggerFactory.getLogger("category");
 
 	@Autowired
-	private ExerciseCategoryRepository repository;
+	private ExerciseCategoryRepository exerciseCategoryRepository;
 
 	@Autowired
 	private UserRepository userRepository;
 
-	public ResponseEntity<Object> createCategory(ExerciseCategory category, Action action) {
-		ExerciseCategory savedCategory = repository.save(category);
-		LOGGER.debug(action + "Category created: " + category);
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-				.buildAndExpand(savedCategory.getId()).toUri();
-		return ResponseEntity.created(location).build();
+	public ExerciseCategory createCategories(ExerciseCategory category, String userEmail, Action action) {
+		category.setUserEmail(userEmail);
+		return exerciseCategoryRepository.save(category);
 	}
 
-	public List<ExerciseCategory> getAllCategories(String username, Action action) {
+	public ExerciseCategory updateCategory(ExerciseCategory category, String userEmail, Action action) {
 
-		Appuser getUser = userRepository.findByName(username);
-		if (getUser == null) {
-			LOGGER.error(action + "No user in DB: " + username);
-			throw new com.krisbijan.fitit.exception.UserNotFoundException("Username-" + username);
-		}
-		LOGGER.debug(action + "Got user: " + username);
-
-		List<ExerciseCategory> categoryList = repository.findByUserId(getUser.getId());
-		LOGGER.debug(action + "Got all categories for username: " + username);
-		return categoryList;
+		if (userEmail.equalsIgnoreCase(category.getUserEmail()))
+			return exerciseCategoryRepository.save(category);
+		else
+			throw new UnauthorizedAccessException();
 	}
 
-	public ExerciseCategory deleteCategory(String username, String categoryName, Action action) {
-		Appuser getUser = userRepository.findByName(username);
-		if (getUser == null) {
-			LOGGER.error(action + "No user in DB: " + username);
-			throw new com.krisbijan.fitit.exception.UserNotFoundException("Username-" + username);
-		}
-		LOGGER.debug(action + "Got user: " + username);
-		
-		
-		
-		List<ExerciseCategory> categoryList = repository.findByUserIdAndCategoryName(getUser.getId(), categoryName);
-		if (categoryList == null || categoryList.size() == 0) {
-			LOGGER.error(action + "No category like that in DB: " + categoryName);
-			throw new com.krisbijan.fitit.exception.CategoryNotFoundException("CategoryName-" + categoryName);
-		}
-		LOGGER.debug(action + "Got all categories for username: " + username);
-		repository.delete(categoryList.get(0));
-		return categoryList.get(0);
-		
+	public ExerciseCategory deleteCategory(Integer id, String userEmail, Action action) {
+
+		ExerciseCategory exerciseCategory = exerciseCategoryRepository.findOne(id);
+
+		if (userEmail.equalsIgnoreCase(exerciseCategory.getUserEmail())) {
+			exerciseCategoryRepository.delete(exerciseCategory);
+			return exerciseCategory;
+		} else
+			throw new UnauthorizedAccessException();
+
 	}
 
-
+	public List<ExerciseCategory> getAllCategories(String userEmail, Action action) {
+		return exerciseCategoryRepository.findByUserEmail(userEmail);
+	}
 
 }

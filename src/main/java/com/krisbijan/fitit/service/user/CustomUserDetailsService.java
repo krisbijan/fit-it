@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.krisbijan.fitit.model.Appuser;
+import com.krisbijan.fitit.model.UserEntity;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -16,8 +16,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 	
 	@Override
 	public UserDetails loadUserByUsername(String arg0) throws UsernameNotFoundException {
-		Appuser user = userRepository.findByName(arg0);
-		return new org.springframework.security.core.userdetails.User(user.getName(), user.getPassword(), user.getRoles());
+		UserEntity user = userRepository.findByEmail(arg0);
+		return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), user.getRoles());
 	}
 
 }

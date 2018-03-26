@@ -3,6 +3,8 @@ package com.krisbijan.fitit.model;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
@@ -12,18 +14,26 @@ import org.springframework.security.core.GrantedAuthority;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+@Entity
+@Table(name = "role")
 public class Role implements GrantedAuthority{
 
 
-	
 	@JsonIgnore
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
 	@Size(min=1)
 	private String name;
 	
 	@ManyToMany(mappedBy = "roles")
-	Set<Appuser> users;
+	Set<UserEntity> appusers;
+
+	@Override
+	public String getAuthority() {
+		return name;
+	}
 
 	public Integer getId() {
 		return id;
@@ -37,31 +47,18 @@ public class Role implements GrantedAuthority{
 		return name;
 	}
 
-	public Role(Integer id, String name) {
-		super();
-		this.id = id;
-		this.name = name;
-	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	public Set<Appuser> getUsers() {
-		return users;
+	public Set<UserEntity> getAppusers() {
+		return appusers;
 	}
 
-	public void setUsers(Set<Appuser> users) {
-		this.users = users;
-	}
-
-	@Override
-	public String getAuthority() {
-		return name;
+	public void setAppusers(Set<UserEntity> appusers) {
+		this.appusers = appusers;
 	}
 	
-	public Role() {
-		
-	}
+	
 
 }

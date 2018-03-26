@@ -24,9 +24,4 @@ public class Action {
 		return "ActionID "+actionId + " - Started " + date + ": ";
 	}
 
-
-	
-	
-	
-
 }
