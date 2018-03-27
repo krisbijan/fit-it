@@ -42,12 +42,12 @@ public class UserEntity {
 	@JoinTable(name = "user_role", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "role_id") })
 	private Set<Role> roles;
-	
-	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "userEntity")
-	private Set<Workout> workouts = new HashSet<>();
-
-	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "userEntity")
-	private Set<Exercise> exercises = new HashSet<>();
+//	
+//	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "userEntity")
+//	private Set<Workout> workouts = new HashSet<>();
+//
+//	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "userEntity")
+//	private Set<Exercise> exercises = new HashSet<>();
 
 	public Integer getId() {
 		return id;
@@ -105,21 +105,21 @@ public class UserEntity {
 		this.roles = roles;
 	}
 
-	public Set<Workout> getWorkouts() {
-		return workouts;
-	}
-
-	public void setWorkouts(Set<Workout> workouts) {
-		this.workouts = workouts;
-	}
-
-	public Set<Exercise> getExercises() {
-		return exercises;
-	}
-
-	public void setExercises(Set<Exercise> exercises) {
-		this.exercises = exercises;
-	}
+//	public Set<Workout> getWorkouts() {
+//		return workouts;
+//	}
+//
+//	public void setWorkouts(Set<Workout> workouts) {
+//		this.workouts = workouts;
+//	}
+//
+//	public Set<Exercise> getExercises() {
+//		return exercises;
+//	}
+//
+//	public void setExercises(Set<Exercise> exercises) {
+//		this.exercises = exercises;
+//	}
 
 	
 
