@@ -3,13 +3,15 @@ package com.krisbijan.fitit.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
-import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
-
+import org.springframework.security.web.session.SessionManagementFilter;
 import com.krisbijan.fitit.service.user.CustomUserDetailsService;
 
 @Configuration
@@ -34,5 +36,30 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Bean
 	public static NoOpPasswordEncoder passwordEncoder() {
 		return (NoOpPasswordEncoder) NoOpPasswordEncoder.getInstance();
+	}
+	
+	@Override
+	public void configure(WebSecurity web) throws Exception {
+		web.ignoring().antMatchers(HttpMethod.OPTIONS, "/**");
+	}
+
+	@Bean
+	CorsFilter corsFilterNEW() {
+		CorsFilter filter = new CorsFilter();
+		return filter;
+	}
+
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+
+		http.addFilterBefore(corsFilterNEW(), SessionManagementFilter.class).formLogin()
+				.loginProcessingUrl("/authentication").passwordParameter("password").usernameParameter("username").and()
+				.logout().deleteCookies("JSESSIONID").invalidateHttpSession(true).logoutUrl("/logout")
+				.logoutSuccessUrl("/").and().csrf().disable().anonymous().disable().authorizeRequests()
+				.antMatchers("/authentication").permitAll()
+				.antMatchers("/oauth/token").permitAll()
+				.antMatchers("/oauth/revoke-token").permitAll()
+				.antMatchers("/admin/*").access("hasRole('ROLE_ADMIN')")
+				.antMatchers("/user/*").access("hasRole('ROLE_USER')");
 	}
 }
